@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640" />
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+    <script type="text/javascript" src="dvmap/dvmap.js"></script>
+    <script type="text/javascript">
+
+      $(document).ready(function () {
+        $('#main_content').headsmart();
+
+
+        DvMap.map("buscar_direccion").autocomplete()
+
+        DvMap.map("mapa_basico").search({
+          num: 1,
+          zoom: 14,
+          address: 'La moneda, chile',
+          circle: true,
+          radius: 300,
+          info: true,
+          html: '<div style="width:100px;"> La Moneda, Chile  </div>'
+        });
+
+        $.ajax({ 
+          'async': false, 
+          'global': false, 
+          'url': "dvmap/map.json", 
+          'dataType': "json", 
+          'success': function (data) {
+              
+              DvMap.map("mapa_json").ajax({
+                num: 2,
+                zoom: 11,
+                data: data
+              });
+
+           }
+        });
+
+        DvMap.map("buscar_ejemplo").autocomplete();
+
+        $("#btn_buscar").on('click',function(){
+            var dir = $("#buscar_ejemplo").val();
+            console.log(dir);
+            DvMap.map("mapa_buscador").search({
+              num: 3,
+              zoom: 14,
+              address: dir,
+              circle: true,
+              radius: 300,
+              info: true,
+              html: '<div style="width:100px;"> '+dir+'  </div>'
+            });
+        })
+
+
+      })
+    </script>
+    <title>Google Maps API Dv</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/dvdeveloper/Google-Map-Plugins">Proyecto Github</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Google Maps API DV v1.0</h1>
+            <h2></h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/dvdeveloper/Google-Map-Plugins/zipball/master" class="zip"><em>Descargar</em> .ZIP</a><a href="https://github.com/dvdeveloper/Google-Map-Plugins/tarball/master" class="tgz"><em>Descargar</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Librerías</h3>
+<p class="center">Añadir las siguientes librerias a la cabecera de la página </p>
+<pre><code>https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places
+//dvmap.min.js 
+</code></pre>
+<p>Es necesario cargar las funciones después que la página haya cargado, para saber si la página ya fue cargada. Puedes crear la función window.onload = function() o llamar las funciones al final de la página (antes del <code>&lt;/body&gt;</code>). “Esto no es necesario si utilizas jquery” </p>
+
+<h3>
+<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Mapa</h3>
+<p class="center">Tabla de parametros </p>
+<table>
+  <thead>
+    <tr>
+      <th>Etiqueta</th>
+      <th>Tipo</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>num</td>
+      <td>Int</td>
+      <td>Identificador único, se utiliza para tener multiples mapas en diferentes identificador (#id). <br/>defecto: 0</td>
+    </tr>
+    <tr>
+      <td>zoom</td>
+      <td>Int</td>
+      <td>Distancia que tendra el mapa y marcador. <br/>defecto: 14</td>
+    </tr>
+    <tr>
+      <td>address</td>
+      <td>String</td>
+      <td>Ubicación en la cual se marcará el mapa</td>
+    </tr>
+    <tr>
+      <td>circle</td>
+      <td>Boolean</td>
+      <td>Dibujar un circulo al rededor del punto de referencia. defecto: false </td>
+    </tr>
+    <tr>
+      <td>color</td>
+      <td>String</td>
+      <td>Color del circulo. defecto: #AA0000</td>
+    </tr>
+    <tr>
+      <td>radius</td>
+      <td>Int</td>
+      <td>Kilometros a la redonda. defecto: 300 </td>
+    </tr>
+    <tr>
+      <td>info</td>
+      <td>Boolean</td>
+      <td>Popup en el marcador, defecto: false</td>
+    </tr>
+    <tr>
+      <td>html</td>
+      <td>String</td>
+      <td>Contenido del popup, acepta html </td>
+    </tr>
+  </tbody>
+</table>
+<strong class="subtitulo">Ejemplo Código</strong>
+<pre><code>DvMap.map("#id").search({
+  id: 1,
+  zoom: 14,
+  address: 'Dirección',
+  circle: true,
+  radius: 500,
+  info: true,
+  html: 'example html'
+});</code></pre>
+<strong class="subtitulo">Resultado</strong>
+<div style="width:100%;height:300px;" id="mapa_basico"></div>
+
+<h3>
+<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Json ejemplo Jquery</h3>
+<p class="center">Tabla de parametros </p>
+<table>
+  <thead>
+    <tr>
+      <th>Etiqueta</th>
+      <th>Tipo</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>num</td>
+      <td>Int</td>
+      <td>Identificador único, se utiliza para tener multiples mapas en diferentes identificador (#id). <br/>defecto: 0</td>
+    </tr>
+    <tr>
+      <td>zoom</td>
+      <td>Int</td>
+      <td>Distancia que tendra el mapa y marcador. <br/>defecto: 14</td>
+    </tr>
+    <tr>
+      <td>data</td>
+      <td>Json</td>
+      <td>Estructura json, se define a continuación</td>
+    </tr>
+  </tbody>
+</table>
+
+<strong class="subtitulo">Estructura Json</strong>
+<pre><code>[{ 
+  "id" : 2,
+  "lat": -33.4348476, 
+  "lon": -70.6157308, 
+  "html":"Example HTML ",
+  "circle": true,
+  "color": "#000",
+  "radius": 1000,
+  "click": true
+}]</code></pre>
+<strong class="subtitulo">Integración Jquery</strong>
+<pre><code>$.ajax({ 
+  'async': false, 
+  'global': false, 
+  'url': "mapa.json", 
+  'dataType': "json", 
+  'success': function (data) {
+    DvMap.map("#id").ajax({
+      zoom: 11,
+      data: data
+    });
+  }
+});</code></pre>
+<strong class="subtitulo">Resultado Json</strong>
+<div style="width:100%;height:300px;" id="mapa_json"></div>
+
+<h3>
+<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>AutoCompletar</h3>
+
+<pre><code>DvMap.map("#id").autocomplete();</code></pre>
+<input type="text"class="input_c" id="buscar_direccion" placeholder="escribe aquí la dirección a buscar">
+
+<h3>
+<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Autocompletar + Mapa</h3>
+
+<strong class="subtitulo">Resultado</strong>
+<div id="autocompletar_mapa">
+  <input type="text" class="input_c" id="buscar_ejemplo" placeholder="escribe aquí la dirección a buscar">
+  <input type="button" id="btn_buscar" value="Buscar!">
+
+  <div style="width:100%;height:150px;" id="mapa_buscador"> Presiona buscar! </div>
+</div>
+<strong class="subtitulo">Código Jquery</strong>
+<pre><code>DvMap.map("buscar_ejemplo").autocomplete();
+$("#btn_buscar").on('click',function(){
+    var dir = $("#buscar_ejemplo").val();
+    console.log(dir);
+    DvMap.map("mapa_buscador").search({
+      num: 3,
+      zoom: 14,
+      address: dir,
+      circle: true,
+      radius: 300,
+      info: true,
+      html: dir
+    });
+})</code></pre>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Contacto</h3>
+
+<p>Si deseas contactarme para soporte,ideas y/otros, puedes ubicarme en los siguientes enlaces <a href="https://twitter.com/dvdeveloper">Twitter</a> - <a href="https://www.facebook.com/szal0ny">Facebook</a> </p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>By <a href="https://github.com/dvdeveloper">dvdeveloper</a> descargar en:  <a href="https://github.com/dvdeveloper/Google-Map-Plugins">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>

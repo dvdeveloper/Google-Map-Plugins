@@ -38,13 +38,8 @@
 							obj.zoom = 14;
 						}
 
-						var coordenadas = {
-							latitud 	: '',
-							longitud	: ''
-						};
 
 						priv.initialize(id,obj.num,obj.zoom);
-
 						geocoder[obj.num].geocode({ 'address': obj.address}, function(results, status) {
 						    if (status == google.maps.GeocoderStatus.OK) {
 						      	map[obj.num].setCenter(results[0].geometry.location);
@@ -70,6 +65,10 @@
 
 						      		if(obj.color == null){
 						      			obj.color = "#AA0000";
+						      		}
+
+						      		if(obj.radius == null){
+						      			obj.radius = 300;
 						      		}
 
 							      	var circle = new google.maps.Circle({
@@ -118,7 +117,7 @@
 					        if(json.html == null){
 					        	json.html = "";
 					        }
-
+					        console.log("test"+obj.num);
 					        var marker = new google.maps.Marker({
 					            position: siteLatLng,
 					            map: map[obj.num],
