@@ -1,3 +1,7 @@
 @import url("screen.css");
 @import url("non-screen.css") handheld;
 @import url("non-screen.css") only screen and (max-device-width:640px);
+.subtitulo{ text-align: center; color: #7C334F; width: 100%; display: block; margin: 20px 0px ; border-bottom: 2px solid #D3CCC1; }
+.center{ text-align: center; }
+.input_c{ width: 98%; padding: 5px; }
+#mapa_buscador{ border: 3px dashed #CCC; margin-top: 20px; text-align: center; padding-top: 150px; font-weight: bold; font-size: 20px;}

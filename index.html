@@ -12,22 +12,72 @@
     <script type="text/javascript" src="javascripts/modernizr.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+    <script type="text/javascript" src="dvmap/dvmap.js"></script>
     <script type="text/javascript">
+
       $(document).ready(function () {
-        $('#main_content').headsmart()
+        $('#main_content').headsmart();
+
+
+        DvMap.map("buscar_direccion").autocomplete()
+
+        DvMap.map("mapa_basico").search({
+          num: 1,
+          zoom: 14,
+          address: 'La moneda, chile',
+          circle: true,
+          radius: 300,
+          info: true,
+          html: '<div style="width:100px;"> La Moneda, Chile  </div>'
+        });
+
+        $.ajax({ 
+          'async': false, 
+          'global': false, 
+          'url': "dvmap/map.json", 
+          'dataType': "json", 
+          'success': function (data) {
+              
+              DvMap.map("mapa_json").ajax({
+                num: 2,
+                zoom: 11,
+                data: data
+              });
+
+           }
+        });
+
+        DvMap.map("buscar_ejemplo").autocomplete();
+
+        $("#btn_buscar").on('click',function(){
+            var dir = $("#buscar_ejemplo").val();
+            console.log(dir);
+            DvMap.map("mapa_buscador").search({
+              num: 3,
+              zoom: 14,
+              address: dir,
+              circle: true,
+              radius: 300,
+              info: true,
+              html: '<div style="width:100px;"> '+dir+'  </div>'
+            });
+        })
+
+
       })
     </script>
-    <title>Google-map-plugins by dvdeveloper</title>
+    <title>Google Maps API Dv</title>
   </head>
 
   <body>
-    <a id="forkme_banner" href="https://github.com/dvdeveloper/Google-Map-Plugins">View on GitHub</a>
+    <a id="forkme_banner" href="https://github.com/dvdeveloper/Google-Map-Plugins">Proyecto Github</a>
     <div class="shell">
 
       <header>
         <span class="ribbon-outer">
           <span class="ribbon-inner">
-            <h1>Google-map-plugins</h1>
+            <h1>Google Maps API DV v1.0</h1>
             <h2></h2>
           </span>
           <span class="left-tail"></span>
@@ -37,7 +87,7 @@
 
       <section id="downloads">
         <span class="inner">
-          <a href="https://github.com/dvdeveloper/Google-Map-Plugins/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/dvdeveloper/Google-Map-Plugins/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+          <a href="https://github.com/dvdeveloper/Google-Map-Plugins/zipball/master" class="zip"><em>Descargar</em> .ZIP</a><a href="https://github.com/dvdeveloper/Google-Map-Plugins/tarball/master" class="tgz"><em>Descargar</em> .TGZ</a>
         </span>
       </section>
 
@@ -47,47 +97,183 @@
 
       <section id="main_content">
         <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Librerías</h3>
+<p class="center">Añadir las siguientes librerias a la cabecera de la página </p>
+<pre><code>https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places
+//dvmap.min.js 
 </code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>Es necesario cargar las funciones después que la página haya cargado, para saber si la página ya fue cargada. Puedes crear la función window.onload = function() o llamar las funciones al final de la página (antes del <code>&lt;/body&gt;</code>). “Esto no es necesario si utilizas jquery” </p>
 
 <h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Mapa</h3>
+<p class="center">Tabla de parametros </p>
+<table>
+  <thead>
+    <tr>
+      <th>Etiqueta</th>
+      <th>Tipo</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>num</td>
+      <td>Int</td>
+      <td>Identificador único, se utiliza para tener multiples mapas en diferentes identificador (#id). <br/>defecto: 0</td>
+    </tr>
+    <tr>
+      <td>zoom</td>
+      <td>Int</td>
+      <td>Distancia que tendra el mapa y marcador. <br/>defecto: 14</td>
+    </tr>
+    <tr>
+      <td>address</td>
+      <td>String</td>
+      <td>Ubicación en la cual se marcará el mapa</td>
+    </tr>
+    <tr>
+      <td>circle</td>
+      <td>Boolean</td>
+      <td>Dibujar un circulo al rededor del punto de referencia. defecto: false </td>
+    </tr>
+    <tr>
+      <td>color</td>
+      <td>String</td>
+      <td>Color del circulo. defecto: #AA0000</td>
+    </tr>
+    <tr>
+      <td>radius</td>
+      <td>Int</td>
+      <td>Kilometros a la redonda. defecto: 300 </td>
+    </tr>
+    <tr>
+      <td>info</td>
+      <td>Boolean</td>
+      <td>Popup en el marcador, defecto: false</td>
+    </tr>
+    <tr>
+      <td>html</td>
+      <td>String</td>
+      <td>Contenido del popup, acepta html </td>
+    </tr>
+  </tbody>
+</table>
+<strong class="subtitulo">Ejemplo Código</strong>
+<pre><code>DvMap.map("#id").search({
+  id: 1,
+  zoom: 14,
+  address: 'Dirección',
+  circle: true,
+  radius: 500,
+  info: true,
+  html: 'example html'
+});</code></pre>
+<strong class="subtitulo">Resultado</strong>
+<div style="width:100%;height:300px;" id="mapa_basico"></div>
 
 <h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Json ejemplo Jquery</h3>
+<p class="center">Tabla de parametros </p>
+<table>
+  <thead>
+    <tr>
+      <th>Etiqueta</th>
+      <th>Tipo</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>num</td>
+      <td>Int</td>
+      <td>Identificador único, se utiliza para tener multiples mapas en diferentes identificador (#id). <br/>defecto: 0</td>
+    </tr>
+    <tr>
+      <td>zoom</td>
+      <td>Int</td>
+      <td>Distancia que tendra el mapa y marcador. <br/>defecto: 14</td>
+    </tr>
+    <tr>
+      <td>data</td>
+      <td>Json</td>
+      <td>Estructura json, se define a continuación</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<strong class="subtitulo">Estructura Json</strong>
+<pre><code>[{ 
+  "id" : 2,
+  "lat": -33.4348476, 
+  "lon": -70.6157308, 
+  "html":"Example HTML ",
+  "circle": true,
+  "color": "#000",
+  "radius": 1000,
+  "click": true
+}]</code></pre>
+<strong class="subtitulo">Integración Jquery</strong>
+<pre><code>$.ajax({ 
+  'async': false, 
+  'global': false, 
+  'url': "mapa.json", 
+  'dataType': "json", 
+  'success': function (data) {
+    DvMap.map("#id").ajax({
+      zoom: 11,
+      data: data
+    });
+  }
+});</code></pre>
+<strong class="subtitulo">Resultado Json</strong>
+<div style="width:100%;height:300px;" id="mapa_json"></div>
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>AutoCompletar</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<pre><code>DvMap.map("#id").autocomplete();</code></pre>
+<input type="text"class="input_c" id="buscar_direccion" placeholder="escribe aquí la dirección a buscar">
+
+<h3>
+<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Autocompletar + Mapa</h3>
+
+<strong class="subtitulo">Resultado</strong>
+<div id="autocompletar_mapa">
+  <input type="text" class="input_c" id="buscar_ejemplo" placeholder="escribe aquí la dirección a buscar">
+  <input type="button" id="btn_buscar" value="Buscar!">
+
+  <div style="width:100%;height:150px;" id="mapa_buscador"> Presiona buscar! </div>
+</div>
+<strong class="subtitulo">Código Jquery</strong>
+<pre><code>DvMap.map("buscar_ejemplo").autocomplete();
+$("#btn_buscar").on('click',function(){
+    var dir = $("#buscar_ejemplo").val();
+    console.log(dir);
+    DvMap.map("mapa_buscador").search({
+      num: 3,
+      zoom: 14,
+      address: dir,
+      circle: true,
+      radius: 300,
+      info: true,
+      html: dir
+    });
+})</code></pre>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Contacto</h3>
+
+<p>Si deseas contactarme para soporte,ideas y/otros, puedes ubicarme en los siguientes enlaces <a href="https://twitter.com/dvdeveloper">Twitter</a> - <a href="https://www.facebook.com/szal0ny">Facebook</a> </p>
       </section>
 
       <footer>
         <span class="ribbon-outer">
           <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/dvdeveloper">dvdeveloper</a> can be found on <a href="https://github.com/dvdeveloper/Google-Map-Plugins">GitHub</a></p>
+            <p>By <a href="https://github.com/dvdeveloper">dvdeveloper</a> descargar en:  <a href="https://github.com/dvdeveloper/Google-Map-Plugins">GitHub</a></p>
           </span>
           <span class="left-tail"></span>
           <span class="right-tail"></span>
         </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
         <span class="octocat"></span>
       </footer>
 

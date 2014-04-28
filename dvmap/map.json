@@ -1,0 +1,24 @@
+[{ 
+	"id" : 1,
+    "lat": -33.416022, 
+    "lon": -70.597571, 
+    "html":"<div style='width:300px;'>HTML: -33.416022, -70.597571 </div>",
+    "click": true
+}, 
+{ 
+	"id" : 2,
+    "lat": -33.4348476, 
+    "lon": -70.6157308, 
+    "html":"<div style='width:300px;'>HTML: -33.4348476, -70.6157308 </div> ",
+    "circle": true,
+    "color": "#000",
+    "radius": 1000,
+    "click": true
+}, 
+{ 
+	"id" : 3,
+    "lat": -33.4691199, 
+    "lon": -70.641997,
+    "html":"<div style='width:300px;'>HTML: -33.4691199, -70.641997</div>",
+    "click": true
+}]
