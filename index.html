@@ -52,8 +52,8 @@
 
         $("#btn_buscar").on('click',function(){
             var dir = $("#buscar_ejemplo").val();
-            console.log(dir);
-            DvMap.map("mapa_buscador").search({
+            
+            var t = DvMap.map("mapa_buscador").search({
               num: 3,
               zoom: 14,
               address: dir,
@@ -61,7 +61,10 @@
               radius: 300,
               info: true,
               html: '<div style="width:100px;"> '+dir+'  </div>'
+            },function(result){
+                alert(result.latitud + ' ' +result.longitud);
             });
+
         })
 
 
@@ -77,7 +80,7 @@
       <header>
         <span class="ribbon-outer">
           <span class="ribbon-inner">
-            <h1>Google Maps API DV v1.0</h1>
+            <h1>Google Maps API DV v2.0</h1>
             <h2></h2>
           </span>
           <span class="left-tail"></span>
@@ -168,6 +171,21 @@
   info: true,
   html: 'example html'
 });</code></pre>
+
+<strong class="subtitulo">Callback (v2.0)</strong>
+<p>Se añadió la funcionalidad callback, la cual retorna latitud y longitud de la busqueda. Ejemplo:</p>
+<pre><code>DvMap.map("#id").search({
+  id: 1,
+  zoom: 14,
+  address: 'Dirección',
+  circle: true,
+  radius: 500,
+  info: true,
+  html: 'example html'
+},function(result){
+    alert(result.latitud + '' + result.longitud);
+});</code></pre>
+
 <strong class="subtitulo">Resultado</strong>
 <div style="width:100%;height:300px;" id="mapa_basico"></div>
 
@@ -245,6 +263,7 @@
   <div style="width:100%;height:150px;" id="mapa_buscador"> Presiona buscar! </div>
 </div>
 <strong class="subtitulo">Código Jquery</strong>
+<p><strong>Version 2.0:</strong> Se añadió la funcionalidad callback, la cual retorna latitud y longitud de la busqueda. Ejemplo:</p>
 <pre><code>DvMap.map("buscar_ejemplo").autocomplete();
 $("#btn_buscar").on('click',function(){
     var dir = $("#buscar_ejemplo").val();
@@ -257,6 +276,8 @@ $("#btn_buscar").on('click',function(){
       radius: 300,
       info: true,
       html: dir
+    },function(result){
+      alert(result.latitud + ' ' +result.longitud);
     });
 })</code></pre>
 

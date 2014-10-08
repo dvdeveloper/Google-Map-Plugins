@@ -3,8 +3,6 @@
 	var geocoder = {};
 	var map = {};
 	var infowindow = null;
-	var latitud = {};
-	var longitud = {};
 
 	var priv = {
 		initialize : function(identificador,num,_zoom){
@@ -20,12 +18,16 @@
 
 	var Lib = (function(){
 
-		var core = {	
+		var core = {
+
 			map: function(id){
 				
 				return{
-					search : function(obj){
+					search : function(obj,callback){
 						
+						
+
+						var temp_ = [];
 						if(obj.num == null){
 							obj.num = 0;
 						}
@@ -48,8 +50,10 @@
 						          	position: results[0].geometry.location
 						      	});
 
-						      	/*results[0].geometry.location.k;
-						      	results[0].geometry.location.A;*/
+						      	if(typeof callback === 'function'){
+						      		
+						      		callback({latitud: results[0].geometry.location.k,longitud:results[0].geometry.location.B});
+						      	}
 						      		
 						      	if(obj.info){
 						      		var infowindow = new google.maps.InfoWindow({
@@ -83,6 +87,7 @@
 						      console.log('Geocode was not successful for the following reason: ' + status);
 						    }
 					  	});
+						
 					},
 					autocomplete : function(){
 						var input = document.getElementById(id);
@@ -117,7 +122,6 @@
 					        if(json.html == null){
 					        	json.html = "";
 					        }
-					        console.log("test"+obj.num);
 					        var marker = new google.maps.Marker({
 					            position: siteLatLng,
 					            map: map[obj.num],
