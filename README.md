@@ -1,6 +1,23 @@
 Google-Map-Plugins
 ==================
 
+Versión 2.0
+--------------------------------------
+Se añadió la funcionalidad callback, la cual retorna latitud y longitud de la busqueda. Ejemplo:
+```javascript
+DvMap.map("mapa_buscador").search({
+  num: 3,
+  zoom: 14,
+  address: dir,
+  circle: true,
+  radius: 300,
+  info: true,
+  html: dir
+},function(result){
+  alert(result.latitud + ' ' +result.longitud);
+});
+```
+
 Librerías
 --------------------------------------
 ```javascript
